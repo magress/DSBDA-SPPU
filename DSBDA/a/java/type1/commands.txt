@@ -1,0 +1,9 @@
+hadoop fs -mkdir /input
+hadoop fs -put * /input
+cd DSBDA/Assignment3/temp/
+javac Cyber.java -classpath hadoop-core-1.2.1.jar 
+cd ..
+jar -cvf Cyber.jar -C temp/ .
+hadoop jar Cyber.jar Cyber /input /output
+hadoop fs -cat /output/part-r-00000
+

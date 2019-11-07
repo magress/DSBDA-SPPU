@@ -1,0 +1,249 @@
+hadoopusr@ABHI:~$ hive
+
+
+hive> create database FINAL;
+
+hive> use FINAL;
+
+hive> create table stud(id int,name varchar(20));
+
+hive> alter table stud add columns(marks int);
+
+hive> alter table stud rename to student;
+
+hive> select * from student;
+
+hive> insert into table student values(1,"rahul",80),(2,"rajesh",60);
+
+
+hive> insert into table student values(3,"brijesh",90),(4,"ram",70);
+
+hive> desc student
+    > ;
+OK
+id                  	int                 	                    
+name                	varchar(20)         	                    
+marks               	int                 	                    
+
+hive> select * from student;
+OK
+1	rahul	80
+2	rajesh	60
+3	brijesh	90
+4	ram	70
+
+hive> create table t2(id int,name varchar(20));
+
+hive> insert into table t2 values(23,"hello");
+
+hive> select * from t2;
+
+23	hello
+
+hive> drop table t2;
+
+hive> show tables;
+
+student
+values__tmp__table__1
+values__tmp__table__2
+values__tmp__table__3
+
+hive> 
+    > create table t2(id int,name varchar(20),marks int);
+
+
+hive> insert into table t2 values(1,"AKshay",56);
+
+hive> insert into table t2 values(2,"Raghu",77),(3,"Rohan",48);
+
+hive> select * from student;
+OK
+1	rahul	80
+2	rajesh	60
+3	brijesh	90
+4	ram	70
+
+hive> select * from t2;
+OK
+1	AKshay	56
+2	Raghu	77
+3	Rohan	48
+
+hive> select a.id,b.name from student a join t2 b on a.id=b.id;
+
+1	AKshay
+2	Raghu
+3	Rohan
+
+hive> 
+    > 
+    > create table flight(id int,source varchar(20),destination varchar(20),delay int);
+
+hive> insert into table flight values
+    > (1,'pune','bombay',40),
+    > (2,'lucknow','kolkata',20);
+
+hive> 
+    > 
+    > insert into table flight values
+    > (3,'goa','jaipur',20),
+    > (4,'lucknow','jaipur',70);
+
+hive> select * from flight;
+OK
+1	pune	bombay	40
+2	lucknow	kolkata	20
+3	goa	jaipur	20
+4	lucknow	jaipur	70
+
+hive> create index idx on table flight(id)
+    > as 'org.apache.hadoop.hive.ql.index.compact.CompactIndexHandler' WITH DEFERRED REBUILD;
+
+
+
+hive> select avg(delay) from flight;
+
+37.5
+
+
+
+hive> create table temp2(id int,name string,salary int)
+    > row format delimited fields 
+    > terminated by ','
+    > lines terminated by '\n'
+    > stored as textfile;
+
+
+hive> load data local inpath 'empdb.txt' overwrite into table temp2;
+Loading data to table final.temp2
+Table final.temp2 stats: [numFiles=1, numRows=0, totalSize=82, rawDataSize=0]
+
+hive> select * from temp2;
+
+1	sachin	5000
+2	yuvraj	3000
+3	yogesh	2500
+4	rahul	2000
+5	sunil	4000
+6	pranav	3000
+Time taken: 0.074 seconds, Fetched: 6 row(s)
+
+
+hadoopusr@ABHI:~$ hbase shell
+
+hbase(main):002:0> create 'flight', 'information'
+put 'flight',1,'information:source','mumbai'
+put 'flight',1,'information:destination','pune'
+hbase(main):001:0> scan 'flight'
+ROW                   COLUMN+CELL                                               
+ 1                    column=information:destination, timestamp=1556118006615, v
+                      alue=mumbai                                               
+ 1                    column=information:source, timestamp=1556117968119, value=
+                      pune                                                      
+ 1                    column=schedule:at, timestamp=1556118051517, value=10:00am
+ 1                    column=schedule:delay, timestamp=1556118093130, value=10  
+ 1                    column=schedule:dt, timestamp=1556118061564, value=12:00am
+ 2                    column=information:destination, timestamp=1556118148417, v
+                      alue=lucknow                                              
+ 2                    column=information:source, timestamp=1556118131633, value=
+                      delhi                                                     
+ 2                    column=schedule:at, timestamp=1556118162310, value=11:00am
+ 2                    column=schedule:delay, timestamp=1556118192441, value=20  
+ 2                    column=schedule:dt, timestamp=1556118179315, value=1:00pm 
+ 3                    column=information:destination, timestamp=1556118224210, v
+                      alue=goa                                                  
+ 3                    column=information:source, timestamp=1556118206665, value=
+                      chennai                                                   
+ 3                    column=schedule:at, timestamp=1556118273087, value=8:00am 
+ 3                    column=schedule:delay, timestamp=1556118314983, value=20  
+ 3                    column=schedule:dt, timestamp=1556118304525, value=6:00am 
+ 4                    column=information:destination, timestamp=1556118353725, v
+                      alue=kolkata                                              
+ 4                    column=information:source, timestamp=1556118339447, value=
+                      punjab                                                    
+ 4                    column=schedule:at, timestamp=1556118368461, value=8:00pm 
+ 4                    column=schedule:delay, timestamp=1556118392675, value=9   
+ 4                    column=schedule:dt, timestamp=1556118380540, value=4:00pm 
+4 row(s) in 0.4230 seconds
+
+hbase(main):002:0> put 'flight',1,'schedule:status','ok'
+
+
+hbase(main):003:0> scan 'flight'
+ROW                                    COLUMN+CELL                                                                                                    
+ 1                                     column=information:destination, timestamp=1556118006615, value=mumbai                                          
+ 1                                     column=information:source, timestamp=1556117968119, value=pune                                                 
+ 1                                     column=schedule:at, timestamp=1556118051517, value=10:00am                                                     
+ 1                                     column=schedule:delay, timestamp=1556118093130, value=10                                                       
+ 1                                     column=schedule:dt, timestamp=1556118061564, value=12:00am                                                     
+ 1                                     column=schedule:status, timestamp=1556128312102, value=ok                                                      
+ 2                                     column=information:destination, timestamp=1556118148417, value=lucknow                                         
+ 2                                     column=information:source, timestamp=1556118131633, value=delhi                                                
+ 2                                     column=schedule:at, timestamp=1556118162310, value=11:00am                                                     
+ 2                                     column=schedule:delay, timestamp=1556118192441, value=20                                                       
+ 2                                     column=schedule:dt, timestamp=1556118179315, value=1:00pm                                                      
+ 3                                     column=information:destination, timestamp=1556118224210, value=goa                                             
+ 3                                     column=information:source, timestamp=1556118206665, value=chennai                                              
+ 3                                     column=schedule:at, timestamp=1556118273087, value=8:00am                                                      
+ 3                                     column=schedule:delay, timestamp=1556118314983, value=20                                                       
+ 3                                     column=schedule:dt, timestamp=1556118304525, value=6:00am                                                      
+ 4                                     column=information:destination, timestamp=1556118353725, value=kolkata                                         
+ 4                                     column=information:source, timestamp=1556118339447, value=punjab                                               
+ 4                                     column=schedule:at, timestamp=1556118368461, value=8:00pm                                                      
+ 4                                     column=schedule:delay, timestamp=1556118392675, value=9                                                        
+ 4                                     column=schedule:dt, timestamp=1556118380540, value=4:00pm                                                      
+
+
+hbase(main):004:0> create 'newtable','hahah'
+
+
+=> Hbase::Table - newtable
+hbase(main):005:0> list
+TABLE                                                                                                                                                 
+emphive                                                                                                                                               
+flight                                                                                                                                                
+newtable                                                                                                                                              
+
+
+=> ["emphive", "flight", "newtable"]
+hbase(main):006:0> drop 'newtable'
+
+
+
+
+Drop the named table. Table must first be disabled:
+  hbase> drop 't1'
+  hbase> drop 'ns1:t1'
+
+
+hbase(main):007:0> disable 'newtable'
+
+
+hbase(main):008:0> drop 'newtable'
+
+
+hbase(main):009:0> list
+TABLE                                                                                                                                                 
+emphive                                                                                                                                               
+flight                                                                                                                                                
+2 row(s) in 0.0270 seconds
+
+=> ["emphive", "flight"]
+hbase(main):010:0> 
+
+
+
+
+hive> 
+    > 
+    > create external table hbase_flight(fno int,source string,destination string,at string,dp string,delay string)
+    > stored by 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+    > with serdeproperties
+    > ("hbase.columns.mapping"=":key,information:source,information:destination,schedule:at,schedule:dt,schedule:delay")
+    > TBLPROPERTIES("hbase.table.name"="flight");
+
+
+select * from hbase_flight;
+
+

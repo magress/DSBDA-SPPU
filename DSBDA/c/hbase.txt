@@ -1,0 +1,33 @@
+
+ubuntu@ubuntu-HP-406-G1-MT:~$ hbase shell
+
+
+
+
+
+hbase(main):002:0> create 'document', 'data'
+0 row(s) in 2.5910 seconds
+
+=> Hbase::Table - document
+hbase(main):003:0> put 'document', 1, 'data:name','ait'
+0 row(s) in 0.1850 seconds
+
+hbase(main):004:0> put 'document', 1, 'data:add','pune'
+0 row(s) in 0.0080 seconds
+
+hbase(main):005:0> put 'document', 2, 'data:name','sym'
+0 row(s) in 0.0080 seconds
+
+hbase(main):006:0> put 'document', 2, 'data:add','pune'
+0 row(s) in 0.0080 seconds
+
+hbase(main):007:0> scan 'document'
+ROW                   COLUMN+CELL                                               
+ 1                    column=data:add, timestamp=1523928257000, value=pune      
+ 1                    column=data:name, timestamp=1523928245743, value=ait      
+ 2                    column=data:add, timestamp=1523928283948, value=pune      
+ 2                    column=data:name, timestamp=1523928276392, value=sym      
+2 row(s) in 0.0340 seconds
+
+hbase(main):008:0> 
+

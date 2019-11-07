@@ -1,0 +1,310 @@
+hive> create database data;
+OK
+Time taken: 0.046 seconds
+hive> show databases;
+OK
+data
+db
+db1
+default
+Time taken: 0.009 seconds, Fetched: 4 row(s)
+hive> create table t1(id int,name varchar(10));
+OK
+Time taken: 0.091 seconds
+hive> alter table t1 rename to t;
+OK
+Time taken: 0.056 seconds
+hive> drop table t1;
+OK
+Time taken: 0.007 seconds
+hive> desc t;
+OK
+id                  	int                 	                    
+name                	varchar(10)         	                    
+Time taken: 0.018 seconds, Fetched: 2 row(s)
+hive> alter table t add columns(marks int );
+OK
+Time taken: 0.057 seconds
+hive> desc t;
+OK
+id                  	int                 	                    
+name                	varchar(10)         	                    
+marks               	int                 	                    
+Time taken: 0.017 seconds, Fetched: 3 row(s)
+hive> insert into table t values(11,"rahul",20),(12,"gopal",25);
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = ubuntu_20180417044003_d2873e19-d413-4f00-b4bd-4f9e9045ae12
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Job running in-process (local Hadoop)
+2018-04-17 04:40:05,317 Stage-1 map = 100%,  reduce = 0%
+Ended Job = job_local1609186024_0007
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://localhost:9000/user/hive/warehouse/db1.db/t/.hive-staging_hive_2018-04-17_04-40-03_589_2079503789897146419-1/-ext-10000
+Loading data to table db1.t
+MapReduce Jobs Launched: 
+Stage-Stage-1:  HDFS Read: 1712 HDFS Write: 1173 SUCCESS
+Total MapReduce CPU Time Spent: 0 msec
+OK
+Time taken: 1.945 seconds
+hive> insert into table t values(21,"sahil",40),(15,"vikesh",35);
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = ubuntu_20180417044034_ed0eaefc-a0ef-4de8-9e7e-f70a61230ec7
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Job running in-process (local Hadoop)
+2018-04-17 04:40:35,494 Stage-1 map = 100%,  reduce = 0%
+Ended Job = job_local1901570103_0008
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://localhost:9000/user/hive/warehouse/db1.db/t/.hive-staging_hive_2018-04-17_04-40-34_166_4374337177542760769-1/-ext-10000
+Loading data to table db1.t
+MapReduce Jobs Launched: 
+Stage-Stage-1:  HDFS Read: 1798 HDFS Write: 1284 SUCCESS
+Total MapReduce CPU Time Spent: 0 msec
+OK
+Time taken: 1.524 seconds
+hive> desc t;
+OK
+id                  	int                 	                    
+name                	varchar(10)         	                    
+marks               	int                 	                    
+Time taken: 0.019 seconds, Fetched: 3 row(s)
+hive> select *from t;
+OK
+11	rahul	20
+12	gopal	25
+21	sahil	40
+15	vikesh	35
+Time taken: 0.061 seconds, Fetched: 4 row(s)
+hive> create table t2(id int name varchar(10));
+MismatchedTokenException(24!=347)
+	at org.antlr.runtime.BaseRecognizer.recoverFromMismatchedToken(BaseRecognizer.java:617)
+	at org.antlr.runtime.BaseRecognizer.match(BaseRecognizer.java:115)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.createTableStatement(HiveParser.java:6179)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.ddlStatement(HiveParser.java:3808)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.execStatement(HiveParser.java:2382)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1333)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:208)
+	at org.apache.hadoop.hive.ql.parse.ParseUtils.parse(ParseUtils.java:77)
+	at org.apache.hadoop.hive.ql.parse.ParseUtils.parse(ParseUtils.java:70)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:468)
+	at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1317)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1457)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1237)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1227)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:233)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:184)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:403)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:821)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:759)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:686)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:239)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:153)
+FAILED: ParseException line 1:23 mismatched input 'name' expecting ) near 'int' in create table statement
+hive> create table t2(id int ,name varchar(10));
+OK
+Time taken: 0.1 seconds
+hive> insert into t2 values(11,"umesh"),(12,"hare"),(15,"shantanu");
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = ubuntu_20180417044237_406189ce-f030-41a7-a393-1d093db4a7d9
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Job running in-process (local Hadoop)
+2018-04-17 04:42:38,660 Stage-1 map = 100%,  reduce = 0%
+Ended Job = job_local1827379588_0009
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://localhost:9000/user/hive/warehouse/db1.db/t2/.hive-staging_hive_2018-04-17_04-42-37_357_6297001186918093068-1/-ext-10000
+Loading data to table db1.t2
+MapReduce Jobs Launched: 
+Stage-Stage-1:  HDFS Read: 1937 HDFS Write: 1404 SUCCESS
+Total MapReduce CPU Time Spent: 0 msec
+OK
+Time taken: 1.535 seconds
+hive> select a.id,b.name from t a join t2 b on a.id=b.id;
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = ubuntu_20180417044326_99630611-b820-480a-8e9a-c4d7c7a84c0f
+Total jobs = 1
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/log4j-slf4j-impl-2.6.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+2018-04-17 04:43:30	Starting to launch local task to process map join;	maximum memory = 954728448
+2018-04-17 04:43:31	Dump the side-table for tag: 1 with group count: 3 into file: file:/tmp/ubuntu/19c97532-5674-43e0-ab39-cb731a8480c8/hive_2018-04-17_04-43-26_632_3358777454631606446-1/-local-10004/HashTable-Stage-3/MapJoin-mapfile11--.hashtable
+2018-04-17 04:43:31	Uploaded 1 File to: file:/tmp/ubuntu/19c97532-5674-43e0-ab39-cb731a8480c8/hive_2018-04-17_04-43-26_632_3358777454631606446-1/-local-10004/HashTable-Stage-3/MapJoin-mapfile11--.hashtable (337 bytes)
+2018-04-17 04:43:31	End of local task; Time Taken: 1.668 sec.
+Execution completed successfully
+MapredLocal task succeeded
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Job running in-process (local Hadoop)
+2018-04-17 04:43:34,929 Stage-3 map = 100%,  reduce = 0%
+Ended Job = job_local513457181_0010
+MapReduce Jobs Launched: 
+Stage-Stage-3:  HDFS Read: 2048 HDFS Write: 1404 SUCCESS
+Total MapReduce CPU Time Spent: 0 msec
+OK
+11	umesh
+12	hare
+15	shantanu
+Time taken: 8.303 seconds, Fetched: 3 row(s)
+hive> create index idx on t(id) 
+    > as 'org.apache.hadoop.hive.ql.compact.CompactIndexHandler' WITH DEFERRED REBUILD;
+FAILED: ParseException line 1:20 missing TABLE at 't' near '<EOF>'
+hive> create index idx on table t(id) 
+    > as 'org.apache.hadoop.hive.ql.compact.CompactIndexHandler' WITH DEFERRED REBUILD;
+FAILED: SemanticException class name provided for index handler not found.
+hive> create index idx on table t(id) 
+    > as 'org.apache.hadoop.hive.ql.index.compact.CompactIndexHandler' WITH DEFERRED REBUILD;
+OK
+Time taken: 0.178 seconds
+hive> create table t2(id int,roll int)
+    > row format delimited
+    > fields terminated by ','
+    > lines terminated by '\n'
+    > stored as textfile;
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. AlreadyExistsException(message:Table t2 already exists)
+hive> create table t3(id int,roll int)
+    > row format delimited
+    > fields terminated by ','
+    > lines terminated by '\n'
+    > stored as textfile;
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. AlreadyExistsException(message:Table t3 already exists)
+hive> create table tab(id int,roll int)
+    > row format delimited
+    > fields terminated by ','
+    > lines terminated by '\n'
+    > stored as textfile;
+OK
+Time taken: 0.081 seconds
+hive> load data local inpath "file.txt"
+    > overwrite into table tab;
+Loading data to table db1.tab
+OK
+Time taken: 0.243 seconds
+hive> select *from tab;
+OK
+NULL	NULL
+NULL	NULL
+NULL	NULL
+NULL	NULL
+Time taken: 0.06 seconds, Fetched: 4 row(s)
+hive> load data local inpath "file.txt"
+    > overwrite into table tab;
+Loading data to table db1.tab
+OK
+Time taken: 0.174 seconds
+hive> select *from tab;
+OK
+NULL	NULL
+NULL	NULL
+NULL	NULL
+NULL	NULL
+Time taken: 0.062 seconds, Fetched: 4 row(s)
+hive> load data local inpath "file.txt"
+    > overwrite into table tab;
+Loading data to table db1.tab
+OK
+Time taken: 0.601 seconds
+hive> select *from tab;
+OK
+15416	14
+15262	13
+15240	12
+15370	11
+Time taken: 0.058 seconds, Fetched: 4 row(s)
+hive> select *from t;
+OK
+11	rahul	20
+12	gopal	25
+21	sahil	40
+15	vikesh	35
+Time taken: 0.061 seconds, Fetched: 4 row(s)
+hive> select avg(marks) from t;
+WARNING: Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.
+Query ID = ubuntu_20180417050059_39ef8a72-0219-4488-a653-b25f36e2f835
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Job running in-process (local Hadoop)
+2018-04-17 05:01:00,928 Stage-1 map = 100%,  reduce = 100%
+Ended Job = job_local1319106743_0011
+MapReduce Jobs Launched: 
+Stage-Stage-1:  HDFS Read: 4508 HDFS Write: 3024 SUCCESS
+Total MapReduce CPU Time Spent: 0 msec
+OK
+30.0
+Time taken: 1.284 seconds, Fetched: 1 row(s)
+hive> create external table hbase_tab(id int,name varchar(20),add varchar(20))
+    > stored by 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+    > with serdeproperties("hbase.colums.mapping"=":key,data:name,data:add")
+    > tblproperties("hbase.table.name"='document');
+FAILED: Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask. java.lang.RuntimeException: MetaException(message:org.apache.hadoop.hive.serde2.SerDeException Error: hbase.columns.mapping missing for this HBase table.)
+hive> create external table hbase_tab(id int,name varchar(20),add varchar(20))
+    > stored by 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+    > with serdeproperties("hbase.columns.mapping"=":key,data:name,data:add")
+    > tblproperties("hbase.table.name"='document');
+OK
+Time taken: 1.097 seconds
+hive> select *from document;
+FAILED: SemanticException [Error 10001]: Line 1:13 Table not found 'document'
+hive> select *from 'document'
+    > ;
+NoViableAltException(352@[])
+	at org.apache.hadoop.hive.ql.parse.HiveParser_FromClauseParser.fromSource(HiveParser_FromClauseParser.java:1612)
+	at org.apache.hadoop.hive.ql.parse.HiveParser_FromClauseParser.fromClause(HiveParser_FromClauseParser.java:1312)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.fromClause(HiveParser.java:41872)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.atomSelectStatement(HiveParser.java:36735)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.selectStatement(HiveParser.java:36987)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.regularBody(HiveParser.java:36633)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.queryStatementExpressionBody(HiveParser.java:35822)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.queryStatementExpression(HiveParser.java:35710)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.execStatement(HiveParser.java:2284)
+	at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1333)
+	at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:208)
+	at org.apache.hadoop.hive.ql.parse.ParseUtils.parse(ParseUtils.java:77)
+	at org.apache.hadoop.hive.ql.parse.ParseUtils.parse(ParseUtils.java:70)
+	at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:468)
+	at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1317)
+	at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1457)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1237)
+	at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1227)
+	at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:233)
+	at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:184)
+	at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:403)
+	at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:821)
+	at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:759)
+	at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:686)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:239)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:153)
+FAILED: ParseException line 1:13 cannot recognize input near ''document'' '<EOF>' '<EOF>' in join source
+hive> select *from hbase_tab;
+OK
+1	ait	pune
+2	sym	pune
+Time taken: 0.233 seconds, Fetched: 2 row(s)
+hive>   
+

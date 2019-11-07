@@ -1,0 +1,6 @@
+1 sachin 5000
+2 yuvraj 3000
+3 yogesh 2500
+4 rahul 2000
+5 sunil 4000
+6 pranav 3000
